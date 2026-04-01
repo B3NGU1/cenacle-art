@@ -1,19 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const typewriters = document.querySelectorAll('.typewriter');
-  const speed = 35; // ms per character
+  const speed = 50; // ms per character (slower, more deliberate)
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      const el = entry.target;
-      if (el.dataset.started) return;
-      el.dataset.started = 'true';
-      observer.unobserve(el);
-      typeText(el);
-    });
-  }, { threshold: 0.5 });
+      const block = entry.target;
+      if (block.dataset.started) return;
+      block.dataset.started = 'true';
+      observer.unobserve(block);
 
-  typewriters.forEach((el) => observer.observe(el));
+      const el = block.querySelector('.typewriter');
+      if (el) typeText(el);
+    });
+  }, { threshold: 0.3 });
+
+  // Observe the funnel-block parent, not the typewriter itself
+  document.querySelectorAll('.funnel-block').forEach((block) => {
+    observer.observe(block);
+  });
 
   function typeText(el) {
     const text = el.dataset.text;
@@ -29,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         i++;
         setTimeout(tick, speed);
       } else {
-        // Remove cursor after a pause
         setTimeout(() => cursor.remove(), 1500);
       }
     }
