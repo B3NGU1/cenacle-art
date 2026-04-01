@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postuler — Le Cénacle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="form-container">
+    <h1>Postuler au Cénacle</h1>
+    <p class="subtitle">Remplissez le formulaire ci-dessous. Tous les champs sont obligatoires.</p>
+
+    <div class="form-error" id="formError"></div>
+
+    <form id="applicationForm" novalidate>
+      <!-- Honeypot anti-spam -->
+      <div class="ohnohoney">
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
+        <div class="error-msg">Ce champ est requis.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+        <div class="error-msg">Ce champ est requis.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="instagram">Lien Instagram</label>
+        <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/votre_compte" required>
+        <div class="error-msg">Entrez un lien Instagram valide.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="whatsapp">Numéro WhatsApp</label>
+        <input type="tel" id="whatsapp" name="whatsapp" placeholder="+33 6 12 34 56 78" required>
+        <div class="error-msg">Ce champ est requis.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
+        <div class="error-msg">Entrez un email valide.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="budget">Quel budget mensuel envisagez-vous pour votre développement ?</label>
+        <select id="budget" name="budget" required>
+          <option value="" disabled selected>Sélectionnez</option>
+          <option value="< 500€">&lt; 500 €</option>
+          <option value="500-1000€">500 – 1 000 €</option>
+          <option value="1000-2000€">1 000 – 2 000 €</option>
+          <option value="> 2000€">&gt; 2 000 €</option>
+        </select>
+        <div class="error-msg">Veuillez sélectionner une option.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="objectif">Quel est votre objectif principal en rejoignant le Cénacle ?</label>
+        <textarea id="objectif" name="objectif" placeholder="Décrivez votre objectif en quelques phrases..." required></textarea>
+        <div class="error-msg">Ce champ est requis.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="activite">Décrivez votre activité actuelle (type de musique, événements, communauté…)</label>
+        <textarea id="activite" name="activite" placeholder="Parlez-nous de ce que vous faites..." required></textarea>
+        <div class="error-msg">Ce champ est requis.</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn" id="submitBtn">Envoyer ma candidature</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="form.js"></script>
+</body>
+</html>

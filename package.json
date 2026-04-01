@@ -1,0 +1,10 @@
+{
+  "name": "cenacle-art",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Application funnel for Le Cénacle — DJ/artist branding program",
+  "type": "module",
+  "devDependencies": {
+    "@netlify/functions": "^5.1.5"
+  }
+}
