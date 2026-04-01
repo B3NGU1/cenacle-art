@@ -29,13 +29,18 @@ body {
   line-height: 1.7;
 }
 
-/* ── Hero ── */
+/* ── Landing page ── */
 
-.hero {
+.landing {
+  text-align: center;
+  max-width: 540px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5rem 1.5rem 3rem;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
 }
 
 .logo {
@@ -45,12 +50,7 @@ body {
   opacity: 0.85;
 }
 
-.logo-small {
-  width: 56px;
-  margin-bottom: 1.25rem;
-}
-
-.hero h1 {
+.landing h1 {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 600;
   font-size: 3rem;
@@ -63,100 +63,15 @@ body {
   width: 60px;
   height: 1px;
   background: var(--border);
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
 }
 
-/* ── Funnel ── */
-
-.funnel {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 6rem;
-}
-
-.funnel-block {
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-}
-
-.funnel-block--left {
-  flex-direction: row;
-}
-
-.funnel-block--right {
-  flex-direction: row-reverse;
-}
-
-.funnel-img img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 6px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
-.funnel-img--large {
-  flex: 0 0 340px;
-  max-width: 340px;
-}
-
-.funnel-img--medium {
-  flex: 0 0 280px;
-  max-width: 280px;
-}
-
-.funnel-img--small {
-  flex: 0 0 220px;
-  max-width: 220px;
-}
-
-.funnel-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.funnel-text .typewriter {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem;
-  font-style: italic;
-  color: var(--text-muted);
-  line-height: 1.8;
-  min-height: 3rem;
-}
-
-.typewriter .cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1.2em;
-  background: var(--accent);
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: blink 0.7s steps(1) infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ── CTA ── */
-
-.cta-section {
-  text-align: center;
-  padding: 3rem 1.5rem 5rem;
-}
-
-.cta-lead {
+.landing p {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.2rem;
   font-style: italic;
   color: var(--text-muted);
-  max-width: 540px;
-  margin: 0 auto 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .btn {
@@ -396,31 +311,9 @@ body {
 
 /* ── Responsive ── */
 
-@media (max-width: 700px) {
-  .hero h1 {
+@media (max-width: 600px) {
+  .landing h1 {
     font-size: 2.2rem;
-  }
-
-  .funnel {
-    gap: 4rem;
-  }
-
-  .funnel-block,
-  .funnel-block--right {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .funnel-img--large,
-  .funnel-img--medium,
-  .funnel-img--small {
-    flex: none;
-    max-width: 260px;
-    margin: 0 auto;
-  }
-
-  .funnel-text .typewriter {
-    font-size: 1.15rem;
   }
 
   .form-container h1,
