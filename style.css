@@ -105,19 +105,11 @@ body {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
-.funnel-img--large {
+.funnel-img--large,
+.funnel-img--medium,
+.funnel-img--small {
   flex: 0 0 340px;
   max-width: 340px;
-}
-
-.funnel-img--medium {
-  flex: 0 0 280px;
-  max-width: 280px;
-}
-
-.funnel-img--small {
-  flex: 0 0 220px;
-  max-width: 220px;
 }
 
 .funnel-text {
@@ -421,7 +413,7 @@ body {
   .funnel-img--medium,
   .funnel-img--small {
     flex: none;
-    max-width: 260px;
+    max-width: 280px;
     margin: 0 auto;
   }
 
