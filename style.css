@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500&display=swap');
 
 :root {
-  --bg: #0a0a0a;
-  --bg-card: #141414;
-  --bg-input: #1a1a1a;
-  --border: #2a2a2a;
-  --border-focus: #c9a84c;
-  --text: #f0f0f0;
-  --text-muted: #888;
-  --accent: #c9a84c;
-  --accent-hover: #dab85e;
-  --error: #e74c3c;
-  --success: #2ecc71;
-  --radius: 8px;
+  --bg: #f5f0e8;
+  --bg-card: #ede7db;
+  --bg-input: #faf7f2;
+  --border: #d4cab8;
+  --border-focus: #8b7355;
+  --text: #2c2418;
+  --text-muted: #6b5d4d;
+  --accent: #3d3024;
+  --accent-hover: #5a4636;
+  --error: #9e3030;
+  --success: #4a7c59;
+  --radius: 2px;
 }
 
 * {
@@ -26,42 +26,149 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  line-height: 1.7;
+}
+
+/* ── Hero ── */
+
+.hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
-  line-height: 1.6;
+  padding: 5rem 1.5rem 3rem;
 }
 
-/* ── Landing page ── */
-
-.landing {
-  text-align: center;
-  max-width: 560px;
+.logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 2rem;
+  opacity: 0.85;
 }
 
-.landing h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.8rem;
-  letter-spacing: 0.04em;
-  margin-bottom: 1.5rem;
+.logo-small {
+  width: 56px;
+  margin-bottom: 1.25rem;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 3rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
   color: var(--accent);
 }
 
-.landing p {
-  font-size: 1.1rem;
+.divider {
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+  margin-top: 1.5rem;
+}
+
+/* ── Funnel ── */
+
+.funnel {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.funnel-block {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.funnel-block--left {
+  flex-direction: row;
+}
+
+.funnel-block--right {
+  flex-direction: row-reverse;
+}
+
+.funnel-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.funnel-img--large {
+  flex: 0 0 340px;
+  max-width: 340px;
+}
+
+.funnel-img--medium {
+  flex: 0 0 280px;
+  max-width: 280px;
+}
+
+.funnel-img--small {
+  flex: 0 0 220px;
+  max-width: 220px;
+}
+
+.funnel-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.funnel-text .typewriter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-style: italic;
   color: var(--text-muted);
-  margin-bottom: 2.5rem;
+  line-height: 1.8;
+  min-height: 3rem;
+}
+
+.typewriter .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── CTA ── */
+
+.cta-section {
+  text-align: center;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.cta-lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin: 0 auto 2.5rem;
 }
 
 .btn {
   display: inline-block;
-  padding: 0.9rem 2.4rem;
+  padding: 0.85rem 2.8rem;
   background: var(--accent);
   color: var(--bg);
-  font-weight: 600;
-  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-decoration: none;
   border-radius: var(--radius);
   border: none;
@@ -82,12 +189,15 @@ body {
 
 .form-container {
   width: 100%;
-  max-width: 520px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
 }
 
 .form-container h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 2.2rem;
   color: var(--accent);
   margin-bottom: 0.5rem;
 }
@@ -95,17 +205,19 @@ body {
 .form-container .subtitle {
   color: var(--text-muted);
   margin-bottom: 2rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.4rem;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 0.4rem;
 }
@@ -114,13 +226,13 @@ body {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 0.9rem;
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
   transition: border-color 0.2s;
 }
 
@@ -133,12 +245,14 @@ body {
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
+  line-height: 1.6;
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #555;
+  color: #b0a694;
+  font-style: italic;
 }
 
 .form-group .error-msg {
@@ -159,7 +273,7 @@ body {
 }
 
 .form-error {
-  background: rgba(231, 76, 60, 0.1);
+  background: rgba(158, 48, 48, 0.08);
   border: 1px solid var(--error);
   color: var(--error);
   padding: 0.75rem 1rem;
@@ -170,13 +284,13 @@ body {
 }
 
 .form-actions {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
 .spinner {
   display: inline-block;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border: 2px solid var(--bg);
   border-top-color: transparent;
   border-radius: 50%;
@@ -202,13 +316,15 @@ body {
 
 .confirmation {
   text-align: center;
-  max-width: 560px;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
 }
 
 .confirmation .check-icon {
   width: 64px;
   height: 64px;
-  border: 3px solid var(--success);
+  border: 2px solid var(--success);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -219,8 +335,9 @@ body {
 }
 
 .confirmation h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 2.2rem;
   color: var(--accent);
   margin-bottom: 1.5rem;
 }
@@ -237,7 +354,7 @@ body {
 .confirmation .info-card .row {
   display: flex;
   justify-content: space-between;
-  padding: 0.6rem 0;
+  padding: 0.7rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -251,34 +368,63 @@ body {
 }
 
 .confirmation .info-card .row .value {
+  font-family: 'Cormorant Garamond', serif;
   font-weight: 600;
+  font-size: 1.05rem;
   color: var(--accent);
 }
 
 .confirmation .note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin-bottom: 1rem;
+  line-height: 1.6;
 }
 
 .back-link {
-  color: var(--accent);
+  color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  color: var(--accent);
 }
 
 /* ── Responsive ── */
 
-@media (max-width: 600px) {
-  .landing h1 {
-    font-size: 2rem;
+@media (max-width: 700px) {
+  .hero h1 {
+    font-size: 2.2rem;
   }
+
+  .funnel {
+    gap: 4rem;
+  }
+
+  .funnel-block,
+  .funnel-block--right {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .funnel-img--large,
+  .funnel-img--medium,
+  .funnel-img--small {
+    flex: none;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .funnel-text .typewriter {
+    font-size: 1.15rem;
+  }
+
   .form-container h1,
   .confirmation h1 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 }
