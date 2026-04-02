@@ -1,4 +1,5 @@
 import type { Context } from "@netlify/functions";
+import { getStore } from "@netlify/blobs";
 
 const NOTION_API = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
@@ -185,6 +186,32 @@ async function notifyTelegram(
   });
 }
 
+/** Save submission to Netlify Blobs as a failsafe backup. */
+async function saveToBackup(data: ApplicationData, position: number, date: string) {
+  const store = getStore("submissions");
+  const timestamp = new Date().toISOString();
+  const key = `${timestamp}_${data.email}`;
+
+  // Also maintain a master list for easy CSV export
+  let index: string[] = [];
+  try {
+    const existing = await store.get("_index", { type: "json" });
+    if (Array.isArray(existing)) index = existing;
+  } catch { /* first entry */ }
+  index.push(key);
+
+  await Promise.all([
+    store.setJSON(key, {
+      ...data,
+      submittedAt: timestamp,
+      realPosition: position,
+      realEstimatedDate: date,
+      status: "en attente",
+    }),
+    store.setJSON("_index", index),
+  ]);
+}
+
 export default async (req: Request, _context: Context) => {
   if (req.method !== "POST") {
     return jsonResponse({ error: "Method not allowed" }, 405);
@@ -216,23 +243,38 @@ export default async (req: Request, _context: Context) => {
   }
 
   try {
-    // 1. Count active leads
-    const queueSize = await countActiveLeads(notionKey, dbId);
+    // 1. Count active leads (try Notion, fallback to blob index count)
+    let queueSize = 0;
+    try {
+      queueSize = await countActiveLeads(notionKey, dbId);
+    } catch (err) {
+      console.error("Notion query failed, using blob backup count:", err);
+      const store = getStore("submissions");
+      try {
+        const index = await store.get("_index", { type: "json" });
+        if (Array.isArray(index)) queueSize = index.length;
+      } catch { /* empty store */ }
+    }
 
     // 2. Calculate waitlist
     const waitlist = calculateWaitlist(queueSize);
 
-    // 3. Create Notion entry (real values)
-    await createNotionEntry(notionKey, dbId, data, waitlist.realPosition, waitlist.realDate);
+    // 3. Save to Netlify Blobs FIRST (failsafe — never loses a lead)
+    await saveToBackup(data, waitlist.realPosition, waitlist.realDate);
 
-    // 4. Send Telegram notification (non-blocking — don't fail the request if it errors)
+    // 4. Create Notion entry (real values) — non-blocking if it fails
+    createNotionEntry(notionKey, dbId, data, waitlist.realPosition, waitlist.realDate).catch(
+      (err) => console.error("Notion create failed (lead saved in blob backup):", err)
+    );
+
+    // 5. Send Telegram notification (non-blocking)
     if (telegramToken && telegramChat) {
       notifyTelegram(telegramToken, telegramChat, data).catch((err) =>
         console.error("Telegram notification failed:", err)
       );
     }
 
-    // 5. Return inflated values to frontend
+    // 6. Return inflated values to frontend
     return jsonResponse({
       success: true,
       position: waitlist.inflatedPosition,

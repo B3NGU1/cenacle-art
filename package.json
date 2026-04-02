@@ -6,5 +6,8 @@
   "type": "module",
   "devDependencies": {
     "@netlify/functions": "^5.1.5"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.7.4"
   }
 }
