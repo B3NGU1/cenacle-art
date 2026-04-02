@@ -161,27 +161,34 @@ async function createNotionEntry(
   }
 }
 
-/** Send Telegram notification to Andreas. */
-async function notifyTelegram(
-  botToken: string,
-  chatId: string,
+/** Send email notification to Andreas via Resend. */
+async function notifyEmail(
+  resendKey: string,
+  toEmail: string,
   data: ApplicationData
 ) {
-  const message = [
-    "🎯 *Nouvelle Candidature Cénacle*",
-    "",
-    `*Nom :* ${data.prenom} ${data.nom}`,
-    `*Instagram :* ${data.instagram}`,
-    `*Budget :* ${data.budget}`,
-  ].join("\n");
-
-  await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+  await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${resendKey}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
-      chat_id: chatId,
-      text: message,
-      parse_mode: "Markdown",
+      from: "Le Cénacle <onboarding@resend.dev>",
+      to: toEmail,
+      subject: `Nouvelle candidature — ${data.prenom} ${data.nom}`,
+      html: `
+        <h2>Nouvelle Candidature Cénacle</h2>
+        <table style="border-collapse:collapse;font-family:sans-serif;font-size:14px;">
+          <tr><td style="padding:6px 12px;font-weight:bold;">Nom</td><td style="padding:6px 12px;">${data.prenom} ${data.nom}</td></tr>
+          <tr><td style="padding:6px 12px;font-weight:bold;">Instagram</td><td style="padding:6px 12px;"><a href="${data.instagram}">${data.instagram}</a></td></tr>
+          <tr><td style="padding:6px 12px;font-weight:bold;">WhatsApp</td><td style="padding:6px 12px;">${data.whatsapp}</td></tr>
+          <tr><td style="padding:6px 12px;font-weight:bold;">Email</td><td style="padding:6px 12px;">${data.email}</td></tr>
+          <tr><td style="padding:6px 12px;font-weight:bold;">Budget</td><td style="padding:6px 12px;">${data.budget}</td></tr>
+          <tr><td style="padding:6px 12px;font-weight:bold;">Objectif</td><td style="padding:6px 12px;">${data.objectif}</td></tr>
+          <tr><td style="padding:6px 12px;font-weight:bold;">Activité</td><td style="padding:6px 12px;">${data.activite}</td></tr>
+        </table>
+      `,
     }),
   });
 }
@@ -220,8 +227,8 @@ export default async (req: Request, _context: Context) => {
   // Env vars
   const notionKey = process.env.NOTION_API_KEY;
   const dbId = process.env.NOTION_CENACLE_DB_ID;
-  const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
-  const telegramChat = process.env.TELEGRAM_CHAT_ID_ANDREAS;
+  const resendKey = process.env.RESEND_API_KEY;
+  const andreasEmail = process.env.ANDREAS_EMAIL;
 
   if (!notionKey || !dbId) {
     return jsonResponse({ error: "Server configuration error" }, 500);
@@ -267,10 +274,10 @@ export default async (req: Request, _context: Context) => {
       (err) => console.error("Notion create failed (lead saved in blob backup):", err)
     );
 
-    // 5. Send Telegram notification (non-blocking)
-    if (telegramToken && telegramChat) {
-      notifyTelegram(telegramToken, telegramChat, data).catch((err) =>
-        console.error("Telegram notification failed:", err)
+    // 5. Send email notification (non-blocking)
+    if (resendKey && andreasEmail) {
+      notifyEmail(resendKey, andreasEmail, data).catch((err) =>
+        console.error("Email notification failed:", err)
       );
     }
 
