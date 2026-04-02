@@ -230,9 +230,7 @@ export default async (req: Request, _context: Context) => {
   const resendKey = process.env.RESEND_API_KEY;
   const andreasEmail = process.env.ANDREAS_EMAIL;
 
-  if (!notionKey || !dbId) {
-    return jsonResponse({ error: "Server configuration error" }, 500);
-  }
+  const notionConfigured = !!(notionKey && dbId);
 
   // Parse body
   let data: ApplicationData;
@@ -250,12 +248,16 @@ export default async (req: Request, _context: Context) => {
   }
 
   try {
-    // 1. Count active leads (try Notion, fallback to blob index count)
+    // 1. Count active leads (try Notion if configured, otherwise use blob count)
     let queueSize = 0;
-    try {
-      queueSize = await countActiveLeads(notionKey, dbId);
-    } catch (err) {
-      console.error("Notion query failed, using blob backup count:", err);
+    if (notionConfigured) {
+      try {
+        queueSize = await countActiveLeads(notionKey!, dbId!);
+      } catch (err) {
+        console.error("Notion query failed, using blob backup count:", err);
+      }
+    }
+    if (!notionConfigured || queueSize === 0) {
       const store = getStore("submissions");
       try {
         const index = await store.get("_index", { type: "json" });
@@ -269,10 +271,12 @@ export default async (req: Request, _context: Context) => {
     // 3. Save to Netlify Blobs FIRST (failsafe — never loses a lead)
     await saveToBackup(data, waitlist.realPosition, waitlist.realDate);
 
-    // 4. Create Notion entry (real values) — non-blocking if it fails
-    createNotionEntry(notionKey, dbId, data, waitlist.realPosition, waitlist.realDate).catch(
-      (err) => console.error("Notion create failed (lead saved in blob backup):", err)
-    );
+    // 4. Create Notion entry if configured (non-blocking if it fails)
+    if (notionConfigured) {
+      createNotionEntry(notionKey!, dbId!, data, waitlist.realPosition, waitlist.realDate).catch(
+        (err) => console.error("Notion create failed (lead saved in blob backup):", err)
+      );
+    }
 
     // 5. Send email notification (non-blocking)
     if (resendKey && andreasEmail) {
